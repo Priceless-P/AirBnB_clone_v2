@@ -6,7 +6,7 @@ from os import getenv
 from sqlalchemy import String, Column
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-from models import storage
+import models
 
 
 class State(BaseModel, Base):
@@ -25,7 +25,7 @@ class State(BaseModel, Base):
             """Gets list of all related cities"""
             from models.city import City
             cities = []
-            for city in list(storage.all(City).values()):
+            for city in list(models.storage.all(City).values()):
                 if city.state_id == self.id:
                     cities.append(city)
             return cities
