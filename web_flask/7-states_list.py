@@ -11,13 +11,12 @@ app.url_map.strict_slashes = False
 def states():
     """Displays all sates"""
     from models import State
-    states = models.storage.all(State)
-
+    states = models.storage.all(State).values()
     return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
-def tear_down():
+def tear_down(exception):
     """Removes current SQLAlchemy Session"""
     models.storage.close()
 
