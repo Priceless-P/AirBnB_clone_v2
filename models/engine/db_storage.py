@@ -34,19 +34,19 @@ class DBStorage:
         from models.city import City
         from console import HBNBCommand
         from models.base_model import BaseModel
-        object_dict = {}
         if cls is None:
-            for key in HBNBCommand.classes:
-                if key != "BaseModel":
-                    val = HBNBCommand.classes[key]
-                    for row in self.__session.query(val).all():
-                        object_dict.update({'{}.{}'.format(key, row.id): row})
-            return object_dict
+            objects = self.__session.query(State).all()
+            objects.extend(self.__session.query(City).all())
+            objects.extend(self.__session.query(User).all())
+            objects.extend(self.__session.query(Place).all())
+            objects.extend(self.__session.query(Review).all())
+            objects.extend(self.__session.query(Amenity).all())
         else:
-            if cls is not BaseModel:
-                for row in self.__session.query(cls).all():
-                    object_dict.update({'{}.{}'.format(cls, row.id): row})
-            return object_dict
+            if type(cls) is str:
+                cls = eval(cls)
+            objects = self.__session.query(cls)
+        return {"{}.{}".format(type(obj).__name__, obj.id):
+                obj for obj in objects}
 
     def new(self, obj):
         """Adds new object to database"""

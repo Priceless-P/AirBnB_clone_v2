@@ -19,7 +19,7 @@ class Place(BaseModel, Base):
     """Represet a Place Table
     conatins, city_id, user_id, name, description
     and other room descriptions field"""
-    __tablename__ = 'places'
+    __tablename__ = "places"
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
@@ -43,7 +43,7 @@ class Place(BaseModel, Base):
             from models.review import Review
             import models
             reviews = []
-            for review in list(models.storage.all(Review)):
+            for review in list(models.storage.all(Review).values()):
                 if review.place_id == self.id:
                     reviews.append(review)
             return reviews
@@ -54,7 +54,7 @@ class Place(BaseModel, Base):
             from models.amenity import Amenity
             import models
             amenities = []
-            for amenity in list(models.storage.all(Amenity)):
+            for amenity in list(models.storage.all(Amenity).values()):
                 if amenity.amenity_ids == self.id:
                     amenities.append(amenity)
             return amenities
